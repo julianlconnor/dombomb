@@ -13,14 +13,14 @@ def create_bomb(request):
 
         Returns success and coordinates of the bomb.
     """
-    return jsonify({ 'data' : { Bomb.A_OBJECT_ID : Bomb.create(**request.form) } })
+    return jsonify({ 'data' : { Bomb.A_OBJECT_ID : Bomb.create(**request.args) } })
 
 def sweep(request):
     """ Sweeps the provided page for bombs.
 
         Returns all instances of bombs on that page in JSON.
     """
-    return jsonify({ 'data' : Bomb.sweep(**request.form) })
+    return jsonify({ 'data' : Bomb.sweep(**request.args) })
 
 
 if __name__ == "__main__":

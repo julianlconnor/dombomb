@@ -63,7 +63,14 @@ class Bomb():
 
     @classmethod
     def sweep(klass, **kwargs):
-        print 'Swweeep!'
-        pass
+        """ Returns the results for the provided identifier.
+        """
+        db = klass.mdbc()
+
+        spec = {
+            klass.A_IDENTIFIER : kwargs.get(klass.A_IDENTIFIER, None)
+        }
+
+        return db.find(spec)
 
 
