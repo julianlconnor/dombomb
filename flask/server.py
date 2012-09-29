@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from model.Bomb import Bomb
+from optparse import OptionParser
 
 app = Flask(__name__)
 
@@ -23,5 +24,12 @@ def sweep(request):
     return jsonify({ 'data' : Bomb.sweep(**request.args) })
 
 if __name__ == "__main__":
+
+    parser = OptionParser()
+    parser.add_option("-p", "--port", dest="port", type="int", help="port chigga", metavar="port", default=5000)
+
+    (options, args) = parser.parse_args()
+
     app.debug = True
-    app.run()
+        
+    app.run(port=options.port)
