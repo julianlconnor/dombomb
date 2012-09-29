@@ -7,25 +7,34 @@ from model.Bomb import Bomb
 
 app = Flask(__name__)
 
+
+###
+### Routers
+###
 @app.route("/", methods=['GET', 'POST'])
 def root():
     fn = create_bomb if request.method == 'POST' else sweep
     return fn(request)
 
+###
+### Handler functions
+###
 def create_bomb(request):
     """ Creates a bomb.
-
         Returns success and coordinates of the bomb.
     """
     return jsonify({ 'data' : { Bomb.A_OBJECT_ID : Bomb.create(**request.args) } })
 
 def sweep(request):
     """ Sweeps the provided page for bombs.
-
         Returns all instances of bombs on that page in JSON.
     """
     return jsonify({ 'data' : Bomb.sweep(**request.args) })
 
+
+###
+### Run that shit
+###
 if __name__ == "__main__":
     """ set environment variable DOMBOMB_ENV=production for production
         otherwise, we use local

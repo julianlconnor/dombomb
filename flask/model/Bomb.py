@@ -13,6 +13,7 @@ class Bomb(DomBombMongo):
     A_HEIGHT     = 'height'
     A_DEFAULT_DIMENSION = '50'
     A_IDENTIFIER = 'identifier'
+    A_IS_LIVE = 'is_live'
     A_CREATED_AT = 'created_at'
     A_UPDATED_AT = 'updated_at'
 
@@ -27,6 +28,7 @@ class Bomb(DomBombMongo):
             klass.A_HEIGHT : kwargs.get(klass.A_HEIGHT, klass.A_DEFAULT_DIMENSION),
             klass.A_CREATED_AT : datetime.datetime.now(),
             klass.A_UPDATED_AT : datetime.datetime.now(),
+            klass.A_IS_LIVE : True,
         }
         klass.mdbc().insert(doc)
         id = str(doc.get(klass.A_OBJECT_ID))
