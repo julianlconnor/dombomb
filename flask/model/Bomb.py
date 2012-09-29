@@ -33,14 +33,14 @@ class Bomb():
 
     @classmethod
     def mdbc(klass):
-        from pymongo.cursor import Cursor
-        ##
-        ## Memoized pymongo connection.
-        ##
+        """ Memoized pymongo connection.
+        """
+        
         if not getattr(klass, 'MONGO_COLL_POINTER', None):
             connection = pymongo.connection()
             db = connection[klass.MONGO_DB_NAME]
             klass.MONGO_COLL_POINTER = db[klass.MONGO_COLLECTION_NAME]
+
         return klass.MONGO_COLL_POINTER
 
     @classmethod
@@ -60,5 +60,10 @@ class Bomb():
         id = str(doc.get(klass.A_OBJECT_ID))
 
         return id
+
+    @classmethod
+    def sweep(klass, **kwargs):
+        print 'Swweeep!'
+        pass
 
 

@@ -1,27 +1,28 @@
-from flask import Flask
-import pymongo
+from flask import Flask, request, jsonify
+from model.Bomb import Bomb
 
 app = Flask(__name__)
 
 @app.route("/", methods=['GET', 'POST'])
-def index():
-    if request.method == 'POST':
-        create_bomb()
-    else:
-        sweep()
+def root():
+    fn = create_bomb if request.method == 'POST' else sweep
+    return fn(request)
 
-def create_bomb():
+def create_bomb(request):
     """ Creates a bomb.
+
         Returns success and coordinates of the bomb.
     """
-    pass
+    return jsonify({ 'data' : { Bomb.A_OBJECT_ID : Bomb.create(**request.form) } })
 
-def sweep():
+def sweep(request):
     """ Sweeps the provided page for bombs.
+
         Returns all instances of bombs on that page in JSON.
     """
-    pass
+    return jsonify({ 'data' : Bomb.sweep(**request.form) })
 
 
 if __name__ == "__main__":
+    app.debug = True
     app.run()
