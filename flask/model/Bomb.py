@@ -1,33 +1,19 @@
+import os
 import datetime
-import pymongo
-from pymongo import DESCENDING
 
-class Bomb():
-    ##
-    ## Attributes
-    ##
-    A_OBJECT_ID = "_id"
-
-    A_X = 'x'
-    A_Y = 'y'
-
-    A_DEFAULT_DIMENSION = '50'
-
-    A_WIDTH      = 'width'
-    A_HEIGHT     = 'height'
-    A_IDENTIFIER = 'identifier'
-
-    A_CREATED_AT = 'created_at'
-    A_UPDATED_AT = 'updated_at'
-
+class DomBombMongo():
     ##
     ## Database and collection names
     ##
     MONGO_DB_NAME = 'bombs'
     MONGO_COLLECTION_NAME = 'bomb_coll'
+    MONGO_HOST = os.environ.get('MONGO_HOST');
+    MONGO_PORT = os.environ.get('MONGO_PORT');
 
     @classmethod
     def setup_mongo_indexes(klass):
+        from pymongo import DESCENDING
+
         db = klass.mdbc()
         db.ensure_index([(klass.A_IDENTIFIER, DESCENDING) ])
 
@@ -37,11 +23,42 @@ class Bomb():
         """
         
         if not getattr(klass, 'MONGO_COLL_POINTER', None):
-            connection = pymongo.connection()
+            connection = klass.mongo_connection()
             db = connection[klass.MONGO_DB_NAME]
             klass.MONGO_COLL_POINTER = db[klass.MONGO_COLLECTION_NAME]
 
         return klass.MONGO_COLL_POINTER
+
+    @classmethod
+    def mongo_connection(klass):
+        """ returns a pointer to the DB"""
+
+        if not getattr(klass, 'MONGO_CONNECTION', None):
+
+            from pymongo.connection import Connection
+            connection = Connection(klass.MONGO_HOST, klass.MONGO_PORT)
+            klass.MONGO_CONNECTION = connection
+
+        return klass.MONGO_CONNECTION
+
+class Bomb(DomBombMongo):
+    ##
+    ## Attributes
+    ##
+    A_OBJECT_ID = "_id"
+
+    A_X = 'x'
+    A_Y = 'y'
+
+    A_WIDTH      = 'width'
+    A_HEIGHT     = 'height'
+
+    A_DEFAULT_DIMENSION = '50'
+
+    A_IDENTIFIER = 'identifier'
+
+    A_CREATED_AT = 'created_at'
+    A_UPDATED_AT = 'updated_at'
 
     @classmethod
     def create(klass, **kwargs):
@@ -72,5 +89,4 @@ class Bomb():
         }
 
         return db.find(spec)
-
 

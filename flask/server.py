@@ -22,7 +22,6 @@ def sweep(request):
     """
     return jsonify({ 'data' : Bomb.sweep(**request.args) })
 
-
 if __name__ == "__main__":
     app.debug = True
     app.run()
