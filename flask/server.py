@@ -27,9 +27,12 @@ if __name__ == "__main__":
 
     parser = OptionParser()
     parser.add_option("-p", "--port", dest="port", type="int", help="port chigga", metavar="port", default=5000)
-
+    parser.add_option("-e", "--env", dest="env", type="string", help="environment", metavar="environment", default="test")
     (options, args) = parser.parse_args()
 
+    host = None
+    if ( options.env == "prod" or options.env == "production" ):
+        host = "0.0.0.0"
+
     app.debug = True
-        
-    app.run(port=options.port)
+    app.run(host=host, port=options.port)
