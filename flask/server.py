@@ -1,6 +1,9 @@
-from flask import Flask, request, jsonify
-from model.Bomb import Bomb
+import logging
 from optparse import OptionParser
+from flask import Flask, request, jsonify
+
+import settings
+from model.Bomb import Bomb
 
 app = Flask(__name__)
 
@@ -24,15 +27,22 @@ def sweep(request):
     return jsonify({ 'data' : Bomb.sweep(**request.args) })
 
 if __name__ == "__main__":
-
+    """ set environment variable DOMBOMB_ENV=production for production
+        otherwise, we use local
+    """
+    ## command line args
     parser = OptionParser()
     parser.add_option("-p", "--port", dest="port", type="int", help="port chigga", metavar="port", default=5000)
-    parser.add_option("-e", "--env", dest="env", type="string", help="environment", metavar="environment", default="test")
     (options, args) = parser.parse_args()
 
-    host = None
-    if ( options.env == "prod" or options.env == "production" ):
+    if settings.environ == "production":
+        app.debug = True  # turn off at some point
+        logging.basicConfig(level=logging.INFO)
         host = "0.0.0.0"
+    else:
+        app.debug = True
+        logging.basicConfig(level=logging.DEBUG)
+        host = None
 
-    app.debug = True
+    logging.info("Starting server in env: {0} port: {1}".format(settings.environ, options.port))
     app.run(host=host, port=options.port)

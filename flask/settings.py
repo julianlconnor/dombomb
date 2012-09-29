@@ -11,7 +11,7 @@ environ = "production" if os.environ.get('DOMBOMB_ENV') == "production" else "lo
 ## Mongodb stuff
 if environ == "production":
     MONGO_HOST = "localhost"
-    MONGO_PORT = "27017"
+    MONGO_PORT = 27017
 else:
     MONGO_HOST = "localhost"
-    MONGO_PORT = "27017"
+    MONGO_PORT = 27017
