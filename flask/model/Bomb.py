@@ -88,5 +88,5 @@ class Bomb(DomBombMongo):
             klass.A_IDENTIFIER : kwargs.get(klass.A_IDENTIFIER, None)
         }
 
-        return db.find(spec)
+        return list(db.find(spec))
 
