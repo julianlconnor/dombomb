@@ -372,10 +372,24 @@ function activateBomb(e) {
     * Method that's called when a bomb needs to be blown the fuck up.
     */
     console.log(e);
-    var coords = findClickPos(e);
-    var boom = new Explosion();
+    var coords = findClickPos(e),
+        boom = new Explosion();
+
     boom.dropBomb = __bind(boom.dropBomb, boom);
     boom.dropBomb(coords.x, coords.y);
+
+    disarmBomb(e.srcElement.id);
+}
+
+function disarmBomb(id) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("DELETE", "http://184.72.230.86/?_id=" + id, true);
+    xhr.onreadystatechange = function() { 
+        if ( xhr.readyState == 4 ) {
+            console.log("Removed bomb", xhr.responseText);
+        }
+    };
+    xhr.send();
 }
 
 function setBomb(data) {
@@ -384,6 +398,7 @@ function setBomb(data) {
     */
     var el = document.createElement('div');
     
+    el.setAttribute('id', data._id);
     el.style['z-index'] = '9999';
     el.style['position'] = 'absolute';
     el.style['height'] = data.width;
