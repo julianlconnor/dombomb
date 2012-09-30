@@ -1,4 +1,6 @@
 import logging
+import datetime
+import simplejson
 from optparse import OptionParser
 from flask import Flask, request, jsonify
 
@@ -30,8 +32,16 @@ def sweep(request):
         Returns all instances of bombs on that page in JSON.
     """
     data = Bomb.sweep(**request.args)
-    return jsonify({ 'data': data})
+    out_json = simplejson.dumps({'data': data}, default=_coerce_json)
+    return out_json
 
+def _coerce_json(x):
+    """ datetimes to string so they can be encoded as json
+    """
+    out = x
+    if isinstance(x, datetime.datetime):
+        out = x.isoformat()
+    return out
 
 ###
 ### Run that shit
