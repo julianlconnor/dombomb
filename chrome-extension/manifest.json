@@ -1,13 +1,17 @@
 {
-  "name": "My First Extension",
-  "version": "1.0",
-  "manifest_version": 2,
-  "description": "The first extension that I made.",
-  "browser_action": {
-    "default_icon": "icon.png",
-    "default_popup": "popup.html"
-  },
-  "permissions": [
-    "http://api.flickr.com/"
-  ]
+        "name": "dombomb",
+        "version": "1.0",
+        "content_scripts": [
+            {
+                "matches": ["http://*/*", "https://*/*"],
+                "js": ["myscript.js", "fontbombjs/bomb.js", "fontbombjs/main.js", "fontbombjs/particle.js", "fontbombjs/explosion.js",  "fontbombjs/requestAnimationFrame.js"]
+            }
+        ],
+        "browser_action" : {
+            "default_icon" : "bomb.png"
+        },
+        "permissions": [
+            "http://184.72.230.86/"
+        ],
+        "manifest_version": 2
 }

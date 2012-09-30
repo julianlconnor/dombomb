@@ -209,11 +209,6 @@
       if (!window.FONTBOMB_HIDE_CONFIRMATION) confirmation = true;
       this.bombs = [];
       this.body = document.getElementsByTagName("body")[0];
-      if ((_ref2 = this.body) != null) {
-        _ref2.onclick = function(event) {
-          return _this.dropBomb(event);
-        };
-      }
       this.body.addEventListener("touchstart", function(event) {
         return _this.touchEvent = event;
       });
@@ -328,10 +323,8 @@
       return chars.join(' ');
     };
 
-    Explosion.prototype.dropBomb = function(event) {
-      var pos;
-      pos = window.findClickPos(event);
-      this.bombs.push(new Bomb(pos.x, pos.y));
+    Explosion.prototype.dropBomb = function(x, y) {
+      this.bombs.push(new Bomb(x, y));
       if (window.FONTBOMB_PREVENT_DEFAULT) return event.preventDefault();
     };
 
