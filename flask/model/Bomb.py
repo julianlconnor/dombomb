@@ -55,6 +55,7 @@ class Bomb(DomBombMongo):
         }
         return [a for a in db.find(spec)]
 
+    @classmethod
     def disarm(klass, **kwargs):
         """ mark bomb as not live
         """
