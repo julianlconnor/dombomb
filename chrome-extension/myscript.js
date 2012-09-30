@@ -387,6 +387,7 @@ function activateBomb(e) {
     console.log(e);
     var coords = findClickPos(e);
     var boom = new Explosion();
+    boom.dropBomb = __bind(boom.dropBomb, boom);
     boom.dropBomb(coords.x, coords.y);
 }
 
@@ -394,7 +395,7 @@ function setBomb(data) {
     /*
     * Sets the bomb on the coordinates passed in.
     */
-    var el = document.createElement('div');
+    /*var el = document.createElement('div');
     el.style['z-index'] = '9999';
     el.style['position'] = 'absolute';
     el.style['height'] = data.width;
@@ -404,11 +405,14 @@ function setBomb(data) {
     el.style['top'] = data.y;
     el.style['left'] = data.x;
 
-    el.onmouseover = activateBomb;
+    el.onmouseover = activateBomb;*/
 
-    document.body.appendChild(el);
+    var boom = new Explosion();
+    boom.dropBomb(data.x, data.y);
 
-    return el;
+    //document.body.appendChild(el);
+
+    //return el;
 }
 
 function findClickPos(e){
