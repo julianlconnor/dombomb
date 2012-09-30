@@ -7,7 +7,5 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     * 3. Stop execution.
     *
     */
-    chrome.tabs.executeScript(null, {code:"document.body.bgColor='red'"});
     chrome.tabs.executeScript(null, {file: "placebombs.js"});
-
 });
