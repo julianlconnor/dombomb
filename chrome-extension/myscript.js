@@ -361,17 +361,15 @@ function sweep() {
     };
     xhr.send();
 }
-function activateBomb(e) {
+function activateBomb(e, boom) {
     /*
     * Method that's called when a bomb needs to be blown the fuck up.
+    * e is the mousover event, boom is an instance of explosion
     */
     console.log(e);
-    var coords = findClickPos(e),
-        boom = new Explosion();
+    var coords = findClickPos(e);
 
-    boom.dropBomb = __bind(boom.dropBomb, boom);
     boom.dropBomb(coords.x, coords.y);
-
     disarmBomb(e.srcElement.id);
 }
 
@@ -402,7 +400,12 @@ function setBomb(data) {
     el.style['top'] = data.y + "px";
     el.style['left'] = data.x + "px";
 
-    el.onmouseover = activateBomb;
+    // create the explosion object ahead of time
+    var boom = new Explosion();
+    boom.dropBomb = __bind(boom.dropBomb, boom);
+    el.onmouseover = function(e) {
+        activateBomb(e, boom);
+    }
 
     document.body.appendChild(el);
 
