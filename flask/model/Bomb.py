@@ -21,12 +21,13 @@ class Bomb(DomBombMongo):
     def create(klass, **kwargs):
         """ Creates a bomb object.
         """
+        # flask kwargs are lists to let you pass multiple params if necessary
         doc = {
-            klass.A_X : kwargs.get(klass.A_X, None),
-            klass.A_Y : kwargs.get(klass.A_Y, None),
-            klass.A_WIDTH  : kwargs.get(klass.A_WIDTH, klass.A_DEFAULT_DIMENSION),
-            klass.A_HEIGHT : kwargs.get(klass.A_HEIGHT, klass.A_DEFAULT_DIMENSION),
-            klass.A_IDENTIFIER : kwargs.get(klass.A_IDENTIFIER, None),
+            klass.A_X : kwargs.get(klass.A_X, [None])[0],
+            klass.A_Y : kwargs.get(klass.A_Y, [None])[0],
+            klass.A_WIDTH  : kwargs.get(klass.A_WIDTH, [klass.A_DEFAULT_DIMENSION])[0],
+            klass.A_HEIGHT : kwargs.get(klass.A_HEIGHT, [klass.A_DEFAULT_DIMENSION])[0],
+            klass.A_IDENTIFIER : kwargs.get(klass.A_IDENTIFIER, [None])[0],
             klass.A_CREATED_AT : datetime.datetime.now(),
             klass.A_UPDATED_AT : datetime.datetime.now(),
             klass.A_IS_LIVE : True,
