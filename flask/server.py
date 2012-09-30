@@ -29,7 +29,8 @@ def sweep(request):
     """ Sweeps the provided page for bombs.
         Returns all instances of bombs on that page in JSON.
     """
-    return jsonify({ 'data' : Bomb.sweep(**request.args) })
+    data = Bomb.sweep(**request.args)
+    return jsonify({ 'data': data})
 
 
 ###

@@ -44,4 +44,4 @@ class Bomb(DomBombMongo):
         spec = {
             klass.A_IDENTIFIER : kwargs.get(klass.A_IDENTIFIER, [None])[0]
         }
-        return list(db.find(spec))
+        return [a for a in db.find(spec)]
