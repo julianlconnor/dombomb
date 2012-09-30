@@ -206,22 +206,9 @@ Explosion = (function() {
     this.tick = __bind(this.tick, this);
     this.dropBomb = __bind(this.dropBomb, this);
 
-    if (window.FONTBOMB_LOADED) return;
-    window.FONTBOMB_LOADED = true;
     if (!window.FONTBOMB_HIDE_CONFIRMATION) confirmation = true;
     this.bombs = [];
     this.body = document.getElementsByTagName("body")[0];
-    this.body.addEventListener("touchstart", function(event) {
-      return _this.touchEvent = event;
-    });
-    this.body.addEventListener("touchmove", function(event) {
-      _this.touchMoveCount || (_this.touchMoveCount = 0);
-      return _this.touchMoveCount++;
-    });
-    this.body.addEventListener("touchend", function(event) {
-      if (_this.touchMoveCount < 2) _this.dropBomb(_this.touchEvent);
-      return _this.touchMoveCount = 0;
-    });
     this.explosifyNodes(this.body.childNodes);
     this.chars = (function() {
       var _j, _len2, _ref3, _results;
@@ -342,7 +329,7 @@ Explosion = (function() {
 
   return Explosion;
 
-})();
+})(this);
 
 /*
 * Set bomb on click, send to server. Change this from onclick to something else.
@@ -395,24 +382,22 @@ function setBomb(data) {
     /*
     * Sets the bomb on the coordinates passed in.
     */
-    /*var el = document.createElement('div');
+    var el = document.createElement('div');
+    
     el.style['z-index'] = '9999';
     el.style['position'] = 'absolute';
     el.style['height'] = data.width;
     el.style['width'] = data.height;
     el.style['display'] = 'block';
-    el.style['background'] = '#000';
+    el.style['background'] = 'rgba(0,0,0,0)';
     el.style['top'] = data.y;
     el.style['left'] = data.x;
 
-    el.onmouseover = activateBomb;*/
+    el.onmouseover = activateBomb;
 
-    var boom = new Explosion();
-    boom.dropBomb(data.x, data.y);
+    document.body.appendChild(el);
 
-    //document.body.appendChild(el);
-
-    //return el;
+    return el;
 }
 
 function findClickPos(e){
