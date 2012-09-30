@@ -19,6 +19,13 @@ class Bomb(DomBombMongo):
     A_UPDATED_AT = 'updated_at'
 
     @classmethod
+    def setup_indexes(klass):
+        from pymongo import ASCENDING
+        coll = klass.mdbc()
+        coll.ensure_index([(klass.A_IDENTIFIER, ASCENDING),
+                           (klass.A_IS_LIVE, ASCENDING)])
+
+    @classmethod
     def create(klass, **kwargs):
         """ Creates a bomb object.
         """
