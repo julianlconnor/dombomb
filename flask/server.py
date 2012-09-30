@@ -14,9 +14,14 @@ app = Flask(__name__)
 ###
 ### Routers
 ###
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/", methods=['GET', 'POST', 'DELETE'])
 def root():
-    fn = create_bomb if request.method == 'POST' else sweep
+    if request.method == 'POST':
+        fn = create_bomb
+    elif request.method == 'DELETE':
+        fn = disarm_bomb
+    else:
+        fn = sweep
     return fn(request)
 
 ###
@@ -37,6 +42,12 @@ def sweep(request):
     data = Bomb.sweep(**request.args)
     out_json = simplejson.dumps({'data': data}, default=_coerce_json)
     return out_json
+
+def disarm_bomb(request):
+    """ Mark the bomb as used
+    """
+    Bomb.disarm(**request.args)
+    return simplejson.dumps({'data': 'ok'})
 
 def _coerce_json(x):
     """ datetimes to string so they can be encoded as json

@@ -1,4 +1,5 @@
 import datetime
+import bson
 
 from model.base import DomBombMongo
 
@@ -42,6 +43,18 @@ class Bomb(DomBombMongo):
         """
         db = klass.mdbc()
         spec = {
-            klass.A_IDENTIFIER : kwargs.get(klass.A_IDENTIFIER, [None])[0]
+            klass.A_IDENTIFIER: kwargs.get(klass.A_IDENTIFIER, [None])[0],
+            klass.A_IS_LIVE: True,
         }
         return [a for a in db.find(spec)]
+
+    def disarm(klass, **kwargs):
+        """ mark bomb as not live
+        """
+        db = klass.mdbc()
+        spec = {klass.A_OBJECT_ID: bson.ObjectId(kwargs[klass.A_OBJECT_ID])}
+        new_vals = {klass.A_IS_LIVE: False,
+                    klass.A_UPDATED_AT: datetime.datetime.now(),
+        }
+        db.update(spec, {'$set': new_vals})
+        return True
