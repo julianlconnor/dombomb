@@ -60,7 +60,7 @@ class Bomb(DomBombMongo):
         """ mark bomb as not live
         """
         db = klass.mdbc()
-        spec = {klass.A_OBJECT_ID: bson.ObjectId(kwargs[klass.A_OBJECT_ID])}
+        spec = {klass.A_OBJECT_ID: bson.ObjectId(kwargs[klass.A_OBJECT_ID][0])}
         new_vals = {klass.A_IS_LIVE: False,
                     klass.A_UPDATED_AT: datetime.datetime.now(),
         }
