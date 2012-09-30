@@ -7,11 +7,14 @@
                 "js": ["myscript.js"]
             }
         ],
+        "background" : {
+            "scripts" : ["background.js"]
+        },
         "browser_action" : {
             "default_icon" : "bomb.png"
         },
         "permissions": [
-            "http://184.72.230.86/"
+            "http://184.72.230.86/", "tabs", "http://*/*", "https://*/*"
         ],
         "manifest_version": 2
 }

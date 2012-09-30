@@ -325,23 +325,6 @@ Explosion = (function() {
 
 })(this);
 
-/*
-* Set bomb on click, send to server. Change this from onclick to something else.
-*/
-document.onclick = createBomb;
-function createBomb(e) {
-    var coords = findClickPos(e),
-        xhr = new XMLHttpRequest(),
-        postString = "x="+ coords.x + "&y="+ coords.y + "&identifier=" + encodeURIComponent(window.location);
-    xhr.open("POST", "http://184.72.230.86/?" + postString, true);
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState == 4) {
-        console.log(xhr.responseText);
-      }
-    };
-    console.log('[setBomb] ', postString);
-    xhr.send("x="+ coords.x + "&y="+ coords.y + "&identifier=" + window.location);
-}
 
 /*
 * Check to see if any bombs exist on the page.
@@ -366,11 +349,16 @@ function activateBomb(e, boom) {
     * Method that's called when a bomb needs to be blown the fuck up.
     * e is the mousover event, boom is an instance of explosion
     */
-    console.log(e);
+    document.onclick = stopHomieFromClicking;
     var coords = findClickPos(e);
 
     boom.dropBomb(coords.x, coords.y);
     disarmBomb(e.srcElement.id);
+    setTimeout(function() { document.onclick = null; }, 4000);
+}
+
+function stopHomieFromClicking(e) {
+    e.preventDefault();
 }
 
 function disarmBomb(id) {
