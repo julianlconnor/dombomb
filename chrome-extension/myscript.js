@@ -101,7 +101,6 @@ Particle = (function() {
       distYS = distY * distY;
       distanceWithBlast = distXS + distYS;
       force = 100000 / distanceWithBlast;
-      if (force > 50) force = 50;
       rad = Math.asin(distYS / distanceWithBlast);
       forceY = Math.sin(rad) * force * (distY < 0 ? -1 : 1);
       forceX = Math.cos(rad) * force * (distX < 0 ? -1 : 1);
@@ -206,7 +205,7 @@ Explosion = (function() {
     this.tick = __bind(this.tick, this);
     this.dropBomb = __bind(this.dropBomb, this);
 
-    if (!window.FONTBOMB_HIDE_CONFIRMATION) confirmation = true;
+    if (!window.FONTBOMB_HIDE_CONFIRMATION) confirmation = false;
     this.bombs = [];
     this.body = document.getElementsByTagName("body")[0];
     this.explosifyNodes(this.body.childNodes);
@@ -396,12 +395,12 @@ function setBomb(data) {
     el.setAttribute('id', data._id);
     el.style['z-index'] = '9999';
     el.style['position'] = 'absolute';
-    el.style['height'] = data.width;
-    el.style['width'] = data.height;
+    el.style['height'] = data.width + "px";
+    el.style['width'] = data.height + "px";
     el.style['display'] = 'block';
     el.style['background'] = 'rgba(0,0,0,0)';
-    el.style['top'] = data.y;
-    el.style['left'] = data.x;
+    el.style['top'] = data.y + "px";
+    el.style['left'] = data.x + "px";
 
     el.onmouseover = activateBomb;
 
