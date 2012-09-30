@@ -1,38 +1,84 @@
-from flask import Flask, request, jsonify
-from model.Bomb import Bomb
+import logging
+import datetime
+import simplejson
 from optparse import OptionParser
+from flask import Flask, request
+import bson
+
+import settings
+from model.Bomb import Bomb
 
 app = Flask(__name__)
 
-@app.route("/", methods=['GET', 'POST'])
+
+###
+### Routers
+###
+@app.route("/", methods=['GET', 'POST', 'DELETE'])
 def root():
-    fn = create_bomb if request.method == 'POST' else sweep
+    if request.method == 'POST':
+        fn = create_bomb
+    elif request.method == 'DELETE':
+        fn = disarm_bomb
+    else:
+        fn = sweep
     return fn(request)
 
+###
+### Handler functions
+###
 def create_bomb(request):
     """ Creates a bomb.
-
         Returns success and coordinates of the bomb.
     """
-    return jsonify({ 'data' : { Bomb.A_OBJECT_ID : Bomb.create(**request.args) } })
+    bomb_id = str(Bomb.create(**request.args))
+    out_json = simplejson.dumps({'data': {Bomb.A_OBJECT_ID: bomb_id}})
+    return out_json
 
 def sweep(request):
     """ Sweeps the provided page for bombs.
-
         Returns all instances of bombs on that page in JSON.
     """
-    return jsonify({ 'data' : Bomb.sweep(**request.args) })
+    data = Bomb.sweep(**request.args)
+    out_json = simplejson.dumps({'data': data}, default=_coerce_json)
+    return out_json
 
+def disarm_bomb(request):
+    """ Mark the bomb as used
+    """
+    Bomb.disarm(**request.args)
+    return simplejson.dumps({'data': 'ok'})
+
+def _coerce_json(x):
+    """ datetimes to string so they can be encoded as json
+    """
+    out = x
+    if isinstance(x, datetime.datetime):
+        out = x.isoformat()
+    elif isinstance(x, bson.ObjectId):
+        out = str(x)
+    return out
+
+###
+### Run that shit
+###
 if __name__ == "__main__":
-
+    """ set environment variable DOMBOMB_ENV=production for production
+        otherwise, we use local
+    """
+    ## command line args
     parser = OptionParser()
     parser.add_option("-p", "--port", dest="port", type="int", help="port chigga", metavar="port", default=5000)
-    parser.add_option("-e", "--env", dest="env", type="string", help="environment", metavar="environment", default="test")
     (options, args) = parser.parse_args()
 
-    host = None
-    if ( options.env == "prod" or options.env == "production" ):
+    if settings.environ == "production":
+        app.debug = True  # turn off at some point
+        logging.basicConfig(level=logging.INFO)
         host = "0.0.0.0"
+    else:
+        app.debug = True
+        logging.basicConfig(level=logging.DEBUG)
+        host = None
 
-    app.debug = True
+    logging.info("Starting server in env: {0} port: {1}".format(settings.environ, options.port))
     app.run(host=host, port=options.port)
