@@ -26,6 +26,7 @@ class Bomb(DomBombMongo):
             klass.A_Y : kwargs.get(klass.A_Y, None),
             klass.A_WIDTH  : kwargs.get(klass.A_WIDTH, klass.A_DEFAULT_DIMENSION),
             klass.A_HEIGHT : kwargs.get(klass.A_HEIGHT, klass.A_DEFAULT_DIMENSION),
+            klass.A_IDENTIFIER : kwargs.get(klass.A_IDENTIFIER, None),
             klass.A_CREATED_AT : datetime.datetime.now(),
             klass.A_UPDATED_AT : datetime.datetime.now(),
             klass.A_IS_LIVE : True,
