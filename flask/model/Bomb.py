@@ -42,6 +42,6 @@ class Bomb(DomBombMongo):
         """
         db = klass.mdbc()
         spec = {
-            klass.A_IDENTIFIER : kwargs.get(klass.A_IDENTIFIER, None)
+            klass.A_IDENTIFIER : kwargs.get(klass.A_IDENTIFIER, [None])[0]
         }
         return list(db.find(spec))
