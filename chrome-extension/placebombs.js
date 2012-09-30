@@ -3,6 +3,7 @@ document.body.style['cursor'] = 'crosshair';
 /*
 * Set bomb on click, send to server. Change this from onclick to something else.
 */
+disableLinks();
 document.onclick = createBomb;
 function createBomb(e) {
     e.preventDefault();
@@ -19,4 +20,20 @@ function createBomb(e) {
     xhr.send("x="+ coords.x + "&y="+ coords.y + "&identifier=" + window.location);
     document.onclick = null;
     document.body.style['cursor'] = 'auto';
+    enableLinks();
+}
+
+function disableLinks() {
+    var links = document.getElementsByTagName('a');
+
+    for ( var i = 0; i < links.length; i++ ) {
+        links[i].style['cursor'] = 'crosshair';
+    }
+}
+function enableLinks() {
+    var links = document.getElementsByTagName('a');
+
+    for ( var i = 0; i < links.length; i++ ) {
+        links[i].style['cursor'] = 'pointer';
+    }
 }
