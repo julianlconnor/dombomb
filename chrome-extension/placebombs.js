@@ -5,6 +5,7 @@ document.body.style['cursor'] = 'crosshair';
 */
 disableLinks();
 document.onclick = createBomb;
+
 function createBomb(e) {
     e.preventDefault();
     var coords = findClickPos(e),

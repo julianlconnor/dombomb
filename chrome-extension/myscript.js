@@ -413,7 +413,7 @@ function findClickPos(e){
       posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
     }
     return {
-      x: posx,
-      y: posy
+      x: posx - 25,
+      y: posy - 25
     };
   };
